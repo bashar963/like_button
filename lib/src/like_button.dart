@@ -406,8 +406,8 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
     if (likeCount != oldLikeCount) {
       if (mounted) {
         setState(() {
-          _controller.reset();
-          _controller.forward();
+          _controller!.reset();
+          _controller!.forward();
         });
       }
     }
