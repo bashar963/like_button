@@ -130,7 +130,7 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
         AnimationController(duration: widget.animationDuration, vsync: this);
     _likeCountController = AnimationController(
         duration: widget.likeCountAnimationDuration, vsync: this);
-
+   
     _initAnimations();
   }
 
@@ -153,7 +153,9 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
           duration: widget.likeCountAnimationDuration, vsync: this);
       _initLikeCountControllerAnimation();
     }
-
+ if (_likeCount != oldWidget.likeCount) {
+      _handleIsLikeCountChanged(oldWidget.likeCount ?? 0, _likeCount ?? 0);
+    }
     super.didUpdateWidget(oldWidget);
   }
 
@@ -400,7 +402,17 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
       _handleIsLikeChanged(!(_isLiked ?? true));
     }
   }
-
+  void _handleIsLikeCountChanged(int oldLikeCount, int likeCount) {
+    if (likeCount != oldLikeCount) {
+      if (mounted) {
+        setState(() {
+          _controller.reset();
+          _controller.forward();
+        });
+      }
+    }
+  }
+  
   void _handleIsLikeChanged(bool? isLiked) {
     if (_isLiked == null) {
       if (_likeCount != null) {
